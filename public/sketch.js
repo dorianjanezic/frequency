@@ -60,7 +60,6 @@ function playOscillator() {
 
 }
 
-
 let value = 0;
 function keyPressed() {
     if (value === 0) {
