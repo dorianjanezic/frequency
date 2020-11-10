@@ -135,7 +135,7 @@ function mouseMoved(event) {
 
     score = abs(freqFromMouse() - freq1).toFixed(2);
     console.log(abs(freqFromMouse() - freq1).toFixed(2));
-    
+
     waveform = analyzer.waveform();
     waveFreq = freqAnalyzer.analyze();
   
