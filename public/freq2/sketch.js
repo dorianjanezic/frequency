@@ -133,6 +133,7 @@ function mouseMoved(event) {
       // ellipse(x, y, 2, 2);
     }
     endShape();
+
   }
   
   function mouseClicked(event) {
