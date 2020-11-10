@@ -12,7 +12,7 @@ let clientDate;
 let playing;
 
 window.addEventListener('load', () => {
-      //alert box, emitting username to the server
+  //alert box, emitting username to the server
   clientName = window.prompt("create a username");
   clientDate = Date();
 
@@ -28,14 +28,16 @@ window.addEventListener('load', () => {
     } else {
       osc1.stop();
       osc2.stop();
-
+      toggleButton.innerHTML = "Off";
       toggleButton.style.background = "red";
     }
   })
+
+  //ScoreButton receives the scoreboard data from the server
   let scoreButton = document.getElementById("score-button");
 
   scoreButton.addEventListener("click", () => {
-    //sending the score data to the server
+    //sends the score data to the server first
     let clientObject = {
       "name" : clientName,
       "date" : clientDate,
@@ -54,7 +56,7 @@ window.addEventListener('load', () => {
       let msgEl = document.createElement('p');
       msgEl.innerHTML = receivedMsg;
 
-    //add this element to the page
+      //add this element to the page
       scoreBoardBox.appendChild(msgEl);
       })
 
@@ -63,15 +65,10 @@ window.addEventListener('load', () => {
 
 // global variables for p5 Sketch
 let cnv;
-let osc, osc1, osc2; //base oscillator
-let modulator; // oscillator will modulate frequency of the base osc
-let freq, amp;
+let osc1, osc2; //base oscillator
 let freq1, freq2;
-let mouseFreq, mouseAmp;
-let button, val;
-let mouseFreq1;
+let mouseFreq;
 let analyzer, waveform, freqAnalyzer, waveFreq;
-let clicked;
 let x, y;
 
 function setup() {
@@ -183,7 +180,7 @@ function mouseMoved(event) {
   
   
   function drawArt() {
-    mouseFreq1 = freqFromMouse();
+    mouseFreq = freqFromMouse();
     console.log(mouseFreq);
     noFill();
     let strokeColor = map(mouseFreq, 100, 800, 0, 255);
@@ -191,9 +188,4 @@ function mouseMoved(event) {
     // console.log(strokeColor);
     stroke(strokeColor, strokeColor, strokeColor);
     ellipse(width/2, height/2, size);   
-  }
-
-function drawPos(data, data, freq2) {
-    noFill();
-    ellipse(data.x, data.y, freq2);
   }

@@ -40,10 +40,11 @@ freq2.on('connection', (socket) => {
 
     //getting username and score
     socket.on('clientObject', (data)=> {
+        // I don't think we need to save this in an array
         // scoreBoard[socket.id].name = data.name;
         // scoreBoard[socket.id].score = data.score;
 
-        //sending name and score back
+        //sending name and score back to nameSpace '/freq2'
         // socket.emit('scoreBoard', scoreBoard);
         freq2.emit('scoreBoard', data);
         console.log(scoreBoard);
