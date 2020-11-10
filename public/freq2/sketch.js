@@ -73,6 +73,15 @@ let x, y;
 
 function setup() {
 
+    //listen for freq data from the modulator page
+    socket.on('freqData', (data) => {
+        console.log(data.freq);
+        freq1 = data.freq;
+        osc1.freq(freq1);
+        freq2 = freq1 * random(0.9,1.1);
+        osc2.freq(freq2);
+    })
+
     // oscillators
     osc = new p5.Oscillator('sine');
     osc1 = new p5.Oscillator('sine');
@@ -81,6 +90,7 @@ function setup() {
     cnv = createCanvas(windowWidth, windowHeight);
     
     freq1 = random(100, 500);
+    // console.log(freq1);
     freq2 = freq1 * random(0.9,1.1);
     osc1.pan(-1);
     osc1.freq(freq1);
@@ -92,13 +102,7 @@ function setup() {
 
     analyzer = new p5.FFT();
     freqAnalyzer = new p5.FFT();
-
 }
-
-// function playOscillator() {
-//     osc1.start();
-//     osc2.start(1);
-// }
 
 function freqFromMouse() {
     return map(mouseX, 0, width-1, freq2 * 0.9, freq2 *1.1);
@@ -134,7 +138,7 @@ function mouseMoved(event) {
   function mouseClicked(event) {
 
     score = abs(freqFromMouse() - freq1).toFixed(2);
-    console.log(abs(freqFromMouse() - freq1).toFixed(2));
+    // console.log(abs(freqFromMouse() - freq1).toFixed(2));
 
     waveform = analyzer.waveform();
     waveFreq = freqAnalyzer.analyze();

@@ -17,19 +17,19 @@ server.listen(port, () => {
 let io = require('socket.io').listen(server);
 
 //different nameSpaces
-let freq1 = io.of('/freq1');
+let mod = io.of('/mod');
 let freq2 = io.of('/freq2');
 
 //listening for users to connect
-freq1.on('connection', (socket) => {
-    console.log('freq1 socket connected : ' + socket.id);
+mod.on('connection', (socket) => {
+    console.log('mod socket connected : ' + socket.id);
 
-    socket.on('data', data => {
+    socket.on('freqData', data => {
 
     
-        console.log(data);
+        console.log(data.freq);
 
-        freq2.emit('data', data);
+        freq2.emit('freqData', data);
     });
 });
 
