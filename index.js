@@ -26,5 +26,23 @@ io.sockets.on('connection', (socket) => {
     });
 })
 
+<<<<<<< Updated upstream
 
     
+=======
+    scoreBoard[socket.id]={};
+    // console.log(scoreBoard);
+
+    //getting username
+    socket.on('clientObject', (data)=> {
+        // scoreBoard[socket.id].name = data.name;
+        // scoreBoard[socket.id].score = data.score;
+
+        //sending name and score back
+        // socket.emit('scoreBoard', scoreBoard);
+        freq2.emit('scoreBoard', data);
+        console.log(scoreBoard);
+    });
+
+});
+>>>>>>> Stashed changes
