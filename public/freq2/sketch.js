@@ -9,18 +9,29 @@ socket.on('connect', () => {
 let score;
 let clientName;
 let clientDate;
+let playing;
 
 window.addEventListener('load', () => {
       //alert box, emitting username to the server
   clientName = window.prompt("create a username");
   clientDate = Date();
-  // let clientObject = {
-  //   "name" : clientName,
-  //   "date" : clientDate,
-  //   "socre" : score
-  // };
-  // socket.emit('clientObject', clientObject)
 
+  let toggleButton = document.getElementById("play-button");
+  toggleButton.addEventListener("click", () => {
+    playing = !playing;
+
+    if (playing) {
+      osc1.start();
+      osc2.start(1);
+      toggleButton.style.background = "green";
+      toggleButton.innerHTML = "On";
+    } else {
+      osc1.stop();
+      osc2.stop();
+
+      toggleButton.style.background = "red";
+    }
+  })
   let scoreButton = document.getElementById("score-button");
 
   scoreButton.addEventListener("click", () => {
@@ -31,12 +42,6 @@ window.addEventListener('load', () => {
       "score" : score
     };
     socket.emit('clientObject', clientObject)
-
-    // let scoreObject = {
-    //        "score" : score
-    //    };
-    //    socket.emit('score', scoreObject);
-    // })
 
     //listen for data from the server
     socket.on('scoreBoard', (data) => {
@@ -60,7 +65,7 @@ window.addEventListener('load', () => {
 let cnv;
 let osc, osc1, osc2; //base oscillator
 let modulator; // oscillator will modulate frequency of the base osc
-let playing, freq, amp;
+let freq, amp;
 let freq1, freq2;
 let mouseFreq, mouseAmp;
 let button, val;
@@ -85,7 +90,7 @@ function setup() {
     osc2.freq(freq2);
     osc2.pan(1);
     
-    cnv.mousePressed(playOscillator);
+    // cnv.mousePressed(playOscillator);
     background(0);
 
     analyzer = new p5.FFT();
@@ -93,34 +98,16 @@ function setup() {
 
 }
 
-function playOscillator() {
-    osc1.start();
-
-    osc2.start(1);
-
-}
+// function playOscillator() {
+//     osc1.start();
+//     osc2.start(1);
+// }
 
 function freqFromMouse() {
     return map(mouseX, 0, width-1, freq2 * 0.9, freq2 *1.1);
 }
 
-  function draw() {
-    noStroke();
-    fill(50);
-    textSize(16)
-    text('Tap to Toggle ', width/2, 43);
-
-
-    if (playing) {
-        button = createButton('On');
-        button.position(width/2 + 95, 15);
-        button.style('background-color', "green");
-    } else {
-        val = "red";
-        button = createButton('Off');
-        button.position(width/2 + 95, 15);
-        button.style('background-color', "red");
-    }
+function draw() {
 }
 
 function mouseMoved(event) {
@@ -152,16 +139,16 @@ function mouseMoved(event) {
     score = abs(freqFromMouse() - freq1).toFixed(2);
     console.log(abs(freqFromMouse() - freq1).toFixed(2));
     
-    playing = !playing;
-    clicked = !clicked;
+    // playing = !playing;
+    // clicked = !clicked;
     
-    if (clicked) {
-      osc1.start();
-      osc2.start();
-    } else {
-      osc1.stop();
-       osc2.stop();
-    }
+    // if (clicked) {
+    //   osc1.start();
+    //   osc2.start();
+    // } else {
+    //   osc1.stop();
+    //    osc2.stop();
+    // }
     waveform = analyzer.waveform();
     waveFreq = freqAnalyzer.analyze();
   
