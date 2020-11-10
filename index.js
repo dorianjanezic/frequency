@@ -47,7 +47,7 @@ freq2.on('connection', (socket) => {
         //sending name and score back to nameSpace '/freq2'
         // socket.emit('scoreBoard', scoreBoard);
         freq2.emit('scoreBoard', data);
-        console.log(scoreBoard);
+        console.log(data);
     });
 });
 
