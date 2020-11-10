@@ -3,6 +3,8 @@ let express = require('express');
 let app = express();
 app.use('/', express.static('public'));
 
+let scoreBoard = {}; 
+
 //initialize the HTTP server
 let http = require('http');
 let server = http.createServer(app);
@@ -14,26 +16,29 @@ server.listen(port, () => {
 //initialize socket.io
 let io = require('socket.io').listen(server);
 
+//different nameSpaces
+let freq1 = io.of('/freq1');
+let freq2 = io.of('/freq2');
+
 //listening for users to connect
-io.sockets.on('connection', (socket) => {
-    console.log('we have a new client: ' + socket.id);
+freq1.on('connection', (socket) => {
+    console.log('freq1 socket connected : ' + socket.id);
 
-
-
-
-    socket.on('disconnect', () => {
-        console.log('a client has disconnected: ' + socket.id);
-    });
-})
-
-<<<<<<< Updated upstream
+    socket.on('data', data => {
 
     
-=======
+        console.log(data);
+
+        freq2.emit('data', data);
+    });
+});
+
+freq2.on('connection', (socket) => {
+
     scoreBoard[socket.id]={};
     // console.log(scoreBoard);
 
-    //getting username
+    //getting username and score
     socket.on('clientObject', (data)=> {
         // scoreBoard[socket.id].name = data.name;
         // scoreBoard[socket.id].score = data.score;
@@ -43,6 +48,6 @@ io.sockets.on('connection', (socket) => {
         freq2.emit('scoreBoard', data);
         console.log(scoreBoard);
     });
-
 });
->>>>>>> Stashed changes
+
+
