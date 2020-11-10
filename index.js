@@ -3,7 +3,7 @@ let express = require('express');
 let app = express();
 app.use('/', express.static('public'));
 
-let scoreBoard = {}; 
+// let scoreBoard = {}; 
 
 //initialize the HTTP server
 let http = require('http');
@@ -35,8 +35,11 @@ mod.on('connection', (socket) => {
 
 freq2.on('connection', (socket) => {
 
-    scoreBoard[socket.id]={};
-    // console.log(scoreBoard);
+    // scoreBoard[socket.id]={};
+
+    socket.on('msg', (data) => {
+        console.log(data);
+    })
 
     //getting username and score
     socket.on('clientObject', (data)=> {
@@ -45,7 +48,6 @@ freq2.on('connection', (socket) => {
         // scoreBoard[socket.id].score = data.score;
 
         //sending name and score back to nameSpace '/freq2'
-        // socket.emit('scoreBoard', scoreBoard);
         freq2.emit('scoreBoard', data);
         console.log(data);
     });

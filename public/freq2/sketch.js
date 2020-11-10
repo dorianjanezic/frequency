@@ -10,12 +10,12 @@ let score;
 let clientName;
 let clientDate;
 let playing;
+let nameInput;
+let sendButton;
+let curName;
 
 window.addEventListener('load', () => {
-  //alert box, emitting username to the server
-  clientName = window.prompt("create a username");
-  clientDate = Date();
-
+  //start the oscillators
   let toggleButton = document.getElementById("play-button");
   toggleButton.addEventListener("click", () => {
     playing = !playing;
@@ -33,13 +33,23 @@ window.addEventListener('load', () => {
     }
   })
 
+  nameInput = document.getElementById('uname');
+  sendButton = document.getElementById('send-name');
+
+  sendButton.addEventListener("click", () => {
+    curName = nameInput.value;
+    let msgObj = { "name": curName};
+    socket.emit('msg', msgObj);
+  });
+
+
   //ScoreButton receives the scoreboard data from the server
   let scoreButton = document.getElementById("score-button");
 
   scoreButton.addEventListener("click", () => {
     //sends the score data to the server first
     let clientObject = {
-      "name" : clientName,
+      "name" : curName,
       "date" : clientDate,
       "score" : score
     };
@@ -48,7 +58,7 @@ window.addEventListener('load', () => {
     //listen for data from the server
     socket.on('scoreBoard', (data) => {
       // console.log(data[socket.id].name + ": " + data[socket.id].score);
-      console.log(data);
+      // console.log(data);
 
       let scoreBoardBox = document.getElementById('score');
       let receivedMsg = data.name + ": " + data.score;
@@ -113,7 +123,7 @@ function draw() {
 
 function mouseMoved(event) {
     osc2.freq(freqFromMouse());
-  
+
     waveform = analyzer.waveform();
   
     noStroke();
@@ -129,8 +139,6 @@ function mouseMoved(event) {
       vertex(x, y);
   
       fill(255, col, 100, col);
-  
-      // ellipse(x, y, 2, 2);
     }
     endShape();
 
@@ -139,7 +147,7 @@ function mouseMoved(event) {
   function mouseClicked(event) {
 
     score = abs(freqFromMouse() - freq1).toFixed(2);
-    // console.log(abs(freqFromMouse() - freq1).toFixed(2));
+    console.log(score);
 
     waveform = analyzer.waveform();
     waveFreq = freqAnalyzer.analyze();
