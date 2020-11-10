@@ -136,16 +136,6 @@ function mouseMoved(event) {
     score = abs(freqFromMouse() - freq1).toFixed(2);
     console.log(abs(freqFromMouse() - freq1).toFixed(2));
     
-    // playing = !playing;
-    // clicked = !clicked;
-    
-    // if (clicked) {
-    //   osc1.start();
-    //   osc2.start();
-    // } else {
-    //   osc1.stop();
-    //    osc2.stop();
-    // }
     waveform = analyzer.waveform();
     waveFreq = freqAnalyzer.analyze();
   
