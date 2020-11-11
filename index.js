@@ -7,10 +7,10 @@ app.use('/', express.static('public'));
 let http = require('http');
 let server = http.createServer(app);
 let port = process.env.PORT || 3000;
-server.listen(port, () => {
-    console.log("server is listening at port: " + port);
-});
-
+app.listen(port, ()=> {
+    console.log('listening at ', port);
+    });
+    
 //initialize socket.io
 let io = require('socket.io').listen(server);
 

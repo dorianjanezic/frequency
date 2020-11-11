@@ -82,4 +82,5 @@ h3 {
   background: black;
   color: white;
   font-size: revert;
+  cursor: pointer;
 }
