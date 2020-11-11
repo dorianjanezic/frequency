@@ -38,11 +38,13 @@ window.addEventListener('load', () => {
     }
   })
 
+  let on;
   //spacebar to toggle sound
   document.body.onkeyup = function (e) {
     if (e.keyCod == 32) {
       playing = !playing;
-    }
+      e.preventDefault();
+    } 
   }
 
   nameInput = document.getElementById('uname');
@@ -170,7 +172,6 @@ function mouseMoved(event) {
   }
   
   function mouseClicked(event) {
-
     score = abs(freqFromMouse() - freq1).toFixed(2);
     console.log(score);
 
@@ -206,9 +207,9 @@ function mouseMoved(event) {
     endShape();
     pop();
 
+    return false;
   }
-  
-  
+
   function drawArt() {
     mouseFreq = freqFromMouse();
     console.log(mouseFreq);
