@@ -6,6 +6,7 @@ socket.on('connect', () => {
 
 let freqButton = document.getElementById('send-freq')
 let playButton = document.getElementById('play-button');
+let scoreButton = document.getElementById('get-all-scores')
 
 let cnv;
 let osc; //base oscillator
@@ -39,6 +40,23 @@ window.addEventListener('load', () => {
             playButton.innerHTML = "Pause";
         }
     })
+
+        //listen for data from the server
+        scoreButton.addEventListener("click", () => {
+            socket.on('modBoard', (data) => {
+                let scoreBoardBox = document.getElementById('score');
+    
+                for (let i = 0; i< data.length; i++) {
+                    let receivedMsg = data[i].name + ": " + data[i].score;
+                    let msgEl = document.createElement('p');
+                    msgEl.innerHTML = receivedMsg;
+        
+                    //add this element to the page
+                    scoreBoardBox.appendChild(msgEl);
+                }
+            })
+        })
+    
 });
 
 function setup() {

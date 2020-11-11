@@ -1,9 +1,14 @@
 //create a socket namespace
 let socket = io('/freq2');
+let modSocket = io('/mod');
 
 socket.on('connect', () => {
     console.log("connected");
 });
+
+modSocket.on('connect', () => {
+  console.log("mod socket in freq2 is connected");
+})
 
 //global socket variables
 let score;
@@ -33,6 +38,13 @@ window.addEventListener('load', () => {
     }
   })
 
+  //spacebar to toggle sound
+  document.body.onkeyup = function (e) {
+    if (e.keyCod == 32) {
+      playing = !playing;
+    }
+  }
+
   nameInput = document.getElementById('uname');
   sendButton = document.getElementById('send-name');
 
@@ -45,8 +57,12 @@ window.addEventListener('load', () => {
 
   //ScoreButton receives the scoreboard data from the server
   let scoreButton = document.getElementById("score-button");
+  let receivedMsg;
+  let msgEl;
 
   scoreButton.addEventListener("click", () => {
+    msgEl = document.createElement('p');
+    msgEl.innerHTML = '';
     //sends the score data to the server first
     let clientObject = {
       "name" : curName,
@@ -54,21 +70,30 @@ window.addEventListener('load', () => {
       "score" : score
     };
     socket.emit('clientObject', clientObject)
+    modSocket.emit('clientObject', clientObject)
 
     //listen for data from the server
     socket.on('scoreBoard', (data) => {
-      // console.log(data[socket.id].name + ": " + data[socket.id].score);
       // console.log(data);
 
       let scoreBoardBox = document.getElementById('score');
-      let receivedMsg = data.name + ": " + data.score;
-      // let receivedMsg = data[socket.id].name + ": " + data[socket.id].score
-      let msgEl = document.createElement('p');
-      msgEl.innerHTML = receivedMsg;
 
-      //add this element to the page
-      scoreBoardBox.appendChild(msgEl);
-      })
+      for (let i = 0; i < data.length; i++) {
+        receivedMsg = data[i].name + ": " + data[i].score;
+        // msgEl = document.createElement('p');
+        msgEl.innerHTML = receivedMsg;
+  
+        //add this element to the page
+        scoreBoardBox.appendChild(msgEl);
+      }
+
+      // let receivedMsg = data[i].name + ": " + data[i].score;
+      // let receivedMsg = data[socket.id].name + ": " + data[socket.id].score
+      // let msgEl = document.createElement('p');
+      // msgEl.innerHTML = receivedMsg;
+      // //add this element to the page
+      // scoreBoardBox.appendChild(msgEl);
+      });
 
     });
 });
@@ -167,10 +192,12 @@ function mouseMoved(event) {
       let y = r * sin(angle);
 
       // stroke(200, 255, i);
-      stroke(255);
-      line(width/2, height/2, x, y);
-      vertex(x, y + height / 2);
-      vertex(x +width/2, y);
+      if (amp != 0) {
+        stroke(255);
+        line(width/2, height/2, x, y);
+        vertex(x, y + height / 2);
+        vertex(x +width/2, y);
+      }
 
       // let x = map(i, 0, waveFreq.length, 0, width);
       // let y = map(waveFreq[i], -1, 1, -height / 4, height / 4);
