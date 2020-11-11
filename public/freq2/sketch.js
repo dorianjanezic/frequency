@@ -36,9 +36,8 @@ window.addEventListener('load', () => {
       toggleButton.innerHTML = "Off";
       toggleButton.style.background = "red";
     }
-  })
+    })
 
-  let on;
   //spacebar to toggle sound
   document.body.onkeyup = function (e) {
     if (e.keyCod == 32) {
@@ -149,6 +148,12 @@ function draw() {
 }
 
 function mouseMoved(event) {
+      //send the sound to the mod page
+      let modFreq = {
+        "osc1" : osc1,
+        "osc2" : osc2
+      };
+      modSocket.emit('modFreq', modFreq)
     osc2.freq(freqFromMouse());
 
     waveform = analyzer.waveform();

@@ -6,12 +6,15 @@ socket.on('connect', () => {
 
 let freqButton = document.getElementById('send-freq')
 let playButton = document.getElementById('play-button');
-let scoreButton = document.getElementById('get-all-scores')
+let scoreButton = document.getElementById('get-all-scores');
+let sonicParty = document.getElementById('all-play');
 
 let cnv;
 let osc; //base oscillator
 let modulator; // oscillator will modulate frequency of the base osc
 let playing, freq, amp;
+let osc1, osc2, freq1, freq2;
+let newplay;
 
 window.addEventListener('load', () => {
     
@@ -56,6 +59,30 @@ window.addEventListener('load', () => {
                 }
             })
         })
+
+    sonicParty.addEventListener("click", () => {
+
+            newplay = !newplay;
+
+        if (newplay) {
+            osc1.freq(freq1);
+            osc2.freq(freq2);
+            osc1.pan(-1);
+            osc2.pan(1);
+            osc1.start();
+            console.log(osc1);
+            osc2.start(1);
+            sonicParty.style.background = "coral";
+            sonicParty.innerHTML = "Sonic Party";
+            }
+            else {
+                osc1.stop();
+                osc2.stop();
+                sonicParty.style.background = "white";
+                sonicParty.innerHTML = "Party Off";
+            }
+       
+    })
     
 });
 
@@ -65,15 +92,20 @@ function setup() {
     background('pink');
 
     osc = new p5.Oscillator('triangle');
+    osc1 = new p5.Oscillator();
+    osc2 = new p5.Oscillator();
+
+    socket.on('modFreq', (data) => {
+        // console.log(data)
+        for (let i = 0; i< data.length; i++) {
+            freq1 = data[i].osc1.f;
+            freq2 = data[i].osc2.f;
+        }
+
+    })
 }
 
-function draw() {
 
-    // freq = constrain(map(mouseX, 0, width, 100, 600), 100, 600);
-    // amp = constrain(map(mouseY, height, 0, 0, 1), 0, 1);
-
-
-}
 
 
 let value = 0;

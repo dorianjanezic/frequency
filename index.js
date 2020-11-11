@@ -19,6 +19,7 @@ let mod = io.of('/mod');
 let freq2 = io.of('/freq2');
 
 let allBoard = [];
+let frequencies = [];
 
 //listening for users to connect
 mod.on('connection', (socket) => {
@@ -29,6 +30,13 @@ mod.on('connection', (socket) => {
 
         freq2.emit('freqData', data);
     });
+
+    socket.on('modFreq', data => {
+        // console.log(data.osc1.f);
+        frequencies.push(data);
+        // console.log(frequencies);
+        mod.emit('modFreq', frequencies)
+    })
 
     socket.on('clientObject', data => {
         console.log(data);
